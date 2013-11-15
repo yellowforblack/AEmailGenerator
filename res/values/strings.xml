@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AEmailGenerator</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="selectformatspinner1">Select first name:</string>
+    <string name="selectformatspinner2">Select second name:</string>
+    
+    <string-array name="assets_textfile_array">
+        <item >US-First Name</item>
+        <item >US-Last Name</item>
+        <item >Phil-First Name</item>
+        <item >Phil-Last Name</item>
+        <item >India-First Name</item>
+        <item >India-Last Name</item>
+        <item >Canada-First Name</item>
+        <item >Canada-Last Name</item>
+        <item >UK-First Name</item>
+        <item >UK-Last Name</item>
+    </string-array>
+
+</resources>

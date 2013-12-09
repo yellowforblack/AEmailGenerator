@@ -20,16 +20,22 @@ import android.widget.Toast;
 public class SelectFormat extends Activity{
 	Spinner firstfField;
 	Spinner secondField;
+	EditText keyword_editT;
 	EditText midiator;
+	Button btnFieldNext;
 	
 	ArrayAdapter<String> adapterFNField; 
 	ArrayAdapter<String> adapterSNField;
 	
 	String select_firstfField;
 	String select_secondField;
+	String select_keyword_editT;
 	String select_midiator;
 	
 	List<String> c_list;
+	
+	// Alert Dialog Manager
+    AlertDialogManager alert = new AlertDialogManager();
 	
 	
 	@Override
@@ -39,8 +45,9 @@ public class SelectFormat extends Activity{
 		
 		firstfField = (Spinner) findViewById(R.id.fnspinner);
 		secondField = (Spinner) findViewById(R.id.lnspinner);
+		keyword_editT = (EditText) findViewById(R.id.keyword_editText);
 		midiator = (EditText) findViewById(R.id.midiator_editText);
-		Button btnFieldNext = (Button) findViewById(R.id.btn_nextId);
+		btnFieldNext = (Button) findViewById(R.id.btn_nextId);
 		
 		c_list = new ArrayList<String>();
 		c_list.add("US - First Name");
@@ -51,7 +58,6 @@ public class SelectFormat extends Activity{
 		c_list.add("UK - Last Name");
 		c_list.add("India - First Name");
 		c_list.add("India - Last Name");
-		c_list.add("Keyword");
 		
 		adapterFNField = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,c_list);
 		adapterFNField.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -69,6 +75,7 @@ public class SelectFormat extends Activity{
             	
             	select_firstfField  = firstfField.getSelectedItem().toString();
             	select_secondField  = secondField.getSelectedItem().toString();
+            	select_keyword_editT = keyword_editT.getText().toString();
             	select_midiator = midiator.getText().toString();
             	
                 //Starting a new Intent
@@ -77,34 +84,45 @@ public class SelectFormat extends Activity{
                 //Sending data to another Activity
                 nextScreen.putExtra("firstField", getValueFromHashMap(select_firstfField));
                 nextScreen.putExtra("secondField", getValueFromHashMap(select_secondField));
+                nextScreen.putExtra("keyword_editT", select_keyword_editT);
                 nextScreen.putExtra("midiator", select_midiator);
- 
-                Log.e("Selected Format: ", getValueFromHashMap(select_firstfField)+""+select_midiator+""+getValueFromHashMap(select_secondField));
  
                 startActivity(nextScreen);
  
             }
         });
 		
-		firstfField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-	    {
+		firstfField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-			public void onItemSelected(AdapterView<?> arg0, View v, int position, long id)
-	        {
+			public void onItemSelected(AdapterView<?> arg0, View v, int position, long id) {
 				if(arg0.getItemAtPosition(position).toString().equals("Keyword")){
-					midiator.setEnabled(false);
-	            Log.v("routes", "route selected");
+					keyword_editT.setEnabled(true);
 				}else{
-					Log.v("routes", "fuck!");
+					keyword_editT.setEnabled(false);
+					//alert.showAlertDialog(SelectFormat.this, "Login failed..", "Username/Password is incorrect", false);
 				}
 	        }
 
-	        public void onNothingSelected(AdapterView<?> arg0)
-	        {
-	            Log.v("routes", "nothing selected");
+	        public void onNothingSelected(AdapterView<?> arg0) {
 	        }
-			
 	    });
+		
+		secondField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> arg0, View v, int position, long id) {
+				if(arg0.getItemAtPosition(position).toString().equals("Keyword")){
+					keyword_editT.setEnabled(true);
+				}else{
+					keyword_editT.setEnabled(false);
+					//alert.showAlertDialog(SelectFormat.this, "Login failed..", "Username/Password is incorrect", false);
+				}
+	        }
+
+	        public void onNothingSelected(AdapterView<?> arg0) {
+	        }
+	    });
+		
+		
 	}
 	
 	public String getValueFromHashMap(String value){

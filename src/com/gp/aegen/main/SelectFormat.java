@@ -24,15 +24,9 @@ public class SelectFormat extends Activity{
 	EditText midiator;
 	Button btnFieldNext;
 	
-	ArrayAdapter<String> adapterFNField; 
-	ArrayAdapter<String> adapterSNField;
-	
-	String select_firstfField;
-	String select_secondField;
-	String select_keyword_editT;
-	String select_midiator;
-	
-	List<String> c_list;
+
+	List<String> c_list_one;
+	List<String> c_list_two;
 	
 	// Alert Dialog Manager
     AlertDialogManager alert = new AlertDialogManager();
@@ -49,21 +43,33 @@ public class SelectFormat extends Activity{
 		midiator = (EditText) findViewById(R.id.midiator_editText);
 		btnFieldNext = (Button) findViewById(R.id.btn_nextId);
 		
-		c_list = new ArrayList<String>();
-		c_list.add("US - First Name");
-		c_list.add("US - Last Name");
-		c_list.add("Philippines - First Name");
-		c_list.add("philippines - Last Name");
-		c_list.add("UK - First Name");
-		c_list.add("UK - Last Name");
-		c_list.add("India - First Name");
-		c_list.add("India - Last Name");
+		c_list_one = new ArrayList<String>();
+		c_list_one.add("US - First Name");
+		c_list_one.add("US - Last Name");
+		c_list_one.add("Philippines - First Name");
+		c_list_one.add("philippines - Last Name");
+		c_list_one.add("UK - First Name");
+		c_list_one.add("UK - Last Name");
+		c_list_one.add("India - First Name");
+		c_list_one.add("India - Last Name");
+		c_list_one.add("Keyword");
 		
-		adapterFNField = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,c_list);
+		c_list_two = new ArrayList<String>();
+		c_list_two.add("US - First Name");
+		c_list_two.add("US - Last Name");
+		c_list_two.add("Philippines - First Name");
+		c_list_two.add("philippines - Last Name");
+		c_list_two.add("UK - First Name");
+		c_list_two.add("UK - Last Name");
+		c_list_two.add("India - First Name");
+		c_list_two.add("India - Last Name");
+		c_list_two.add("Keyword");
+		
+		ArrayAdapter<String> adapterFNField = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,c_list_one);
 		adapterFNField.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		firstfField.setAdapter(adapterFNField);
 		
-		adapterSNField = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,c_list);
+		ArrayAdapter<String> adapterSNField = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,c_list_two);
 		adapterSNField.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		secondField.setAdapter(adapterSNField);
 		
@@ -73,21 +79,25 @@ public class SelectFormat extends Activity{
  
             public void onClick(View arg0) {
             	
-            	select_firstfField  = firstfField.getSelectedItem().toString();
-            	select_secondField  = secondField.getSelectedItem().toString();
-            	select_keyword_editT = keyword_editT.getText().toString();
-            	select_midiator = midiator.getText().toString();
+            	String select_firstfField  = firstfField.getSelectedItem().toString();
+            	String select_secondField  = secondField.getSelectedItem().toString();
+            	String select_keyword_editT = keyword_editT.getText().toString().trim();
+            	String select_midiator = midiator.getText().toString();
             	
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), SelectDomainName.class);
- 
-                //Sending data to another Activity
-                nextScreen.putExtra("firstField", getValueFromHashMap(select_firstfField));
-                nextScreen.putExtra("secondField", getValueFromHashMap(select_secondField));
-                nextScreen.putExtra("keyword_editT", select_keyword_editT);
-                nextScreen.putExtra("midiator", select_midiator);
- 
-                startActivity(nextScreen);
+                
+                if(select_keyword_editT.equals("") && (select_firstfField.equals("Keyword") || select_secondField.equals("Keyword"))){
+                	alert.showAlertDialog(SelectFormat.this, "Login failed..", "Udfsdffsername/Password is incorrect", false);
+                }else{
+                	//Sending data to another Activity
+                    nextScreen.putExtra("firstField", getValueFromHashMap(select_firstfField));
+                    nextScreen.putExtra("secondField", getValueFromHashMap(select_secondField));
+                    nextScreen.putExtra("keyword_editT", select_keyword_editT);
+                    nextScreen.putExtra("midiator", select_midiator);
+                    
+                    startActivity(nextScreen);
+                }
  
             }
         });
@@ -96,10 +106,11 @@ public class SelectFormat extends Activity{
 
 			public void onItemSelected(AdapterView<?> arg0, View v, int position, long id) {
 				if(arg0.getItemAtPosition(position).toString().equals("Keyword")){
-					keyword_editT.setEnabled(true);
+					c_list_two.remove("Keyword");
 				}else{
-					keyword_editT.setEnabled(false);
-					//alert.showAlertDialog(SelectFormat.this, "Login failed..", "Username/Password is incorrect", false);
+					if(!c_list_two.contains("Keyword")){
+						c_list_two.add("Keyword");	
+					}
 				}
 	        }
 
@@ -108,13 +119,13 @@ public class SelectFormat extends Activity{
 	    });
 		
 		secondField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
 			public void onItemSelected(AdapterView<?> arg0, View v, int position, long id) {
 				if(arg0.getItemAtPosition(position).toString().equals("Keyword")){
-					keyword_editT.setEnabled(true);
+					c_list_one.remove("Keyword");
 				}else{
-					keyword_editT.setEnabled(false);
-					//alert.showAlertDialog(SelectFormat.this, "Login failed..", "Username/Password is incorrect", false);
+					if(!c_list_one.contains("Keyword")){
+						c_list_one.add("Keyword");
+					}
 				}
 	        }
 
@@ -142,7 +153,6 @@ public class SelectFormat extends Activity{
 				hm.put("India - Last Name", "lname-inda.txt");
 				
 				textFileValue = hm.get(value);
-				
 		return textFileValue;
 	}
 	

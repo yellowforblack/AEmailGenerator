@@ -1,10 +1,10 @@
 package com.gp.aegen.main;
+import com.gp.aegen.model.AlertDialogManager;
 import com.gp.aegen.model.DomainFormat;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +16,8 @@ public class SelectDomainName extends Activity {
 	String secondField;
 	String keyword_editT;
 	String midiator;
+	String domainName;
+	
 	EditText domainEditT;
 	
 	AlertDialogManager alert = new AlertDialogManager();
@@ -29,34 +31,30 @@ public class SelectDomainName extends Activity {
 		Button nxtBtn = (Button) findViewById(R.id.next_btn);
 		domainEditT = (EditText) findViewById(R.id.domain_editText);
 		
-		Bundle extras = getIntent().getExtras();
-		
-		    firstField = extras.getString("firstField");
-		    secondField = extras.getString("secondField");
-		    keyword_editT = extras.getString("keyword_editT");
-		    midiator = extras.getString("midiator");
-		    
-		    
-		
 		    nxtBtn.setOnClickListener(new View.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					 
-					Log.i("info", firstField+" "+secondField+" "+keyword_editT+" "+midiator);
+					
+					Bundle extras = getIntent().getExtras();
+					
+					firstField = extras.getString("firstField");
+				    secondField = extras.getString("secondField");
+				    midiator = extras.getString("midiator");
+				    domainName = domainEditT.getText().toString().trim();
+					
 					//Starting a new Intent
 	                Intent nextScreen = new Intent(getApplicationContext(), SelectKeyWord.class);
 					
-					if(domainEditT.getText().toString().trim().equals("")){
+					if(domainName.equals("")){
 						alert.showAlertDialog(SelectDomainName.this, "Entry Failed...", "Domain name is Empty", false);
-					}else if(!checkDomain.validate(domainEditT.getText().toString().trim())){
+					}else if(!checkDomain.validate(domainName)){
 						alert.showAlertDialog(SelectDomainName.this, "Entry Failed...", "Invalid domain", false);
 					}else{
 						nextScreen.putExtra("firstField", firstField);
 	                    nextScreen.putExtra("secondField", secondField);
-	                    nextScreen.putExtra("keyword_editT", keyword_editT);
 	                    nextScreen.putExtra("midiator", midiator);
-	                    nextScreen.putExtra("domainName", domainEditT.getText().toString().trim());
+	                    nextScreen.putExtra("domainName", domainName);
 	                    
 	                    startActivity(nextScreen);
 					}

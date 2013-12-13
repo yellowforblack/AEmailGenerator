@@ -4,26 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.gp.aegen.model.AlertDialogManager;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 public class SelectFormat extends Activity{
-	Spinner firstfField;
-	Spinner secondField;
-	EditText keyword_editT;
-	EditText midiator;
-	Button btnFieldNext;
-	
 
 	List<String> c_list_one;
 	List<String> c_list_two;
@@ -37,11 +30,13 @@ public class SelectFormat extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.selectformat);
 		
-		firstfField = (Spinner) findViewById(R.id.fnspinner);
-		secondField = (Spinner) findViewById(R.id.lnspinner);
-		keyword_editT = (EditText) findViewById(R.id.keyword_editText);
-		midiator = (EditText) findViewById(R.id.midiator_editText);
-		btnFieldNext = (Button) findViewById(R.id.btn_nextId);
+		final Spinner firstfField = (Spinner) findViewById(R.id.fnspinner);
+		final Spinner secondField = (Spinner) findViewById(R.id.lnspinner);
+		
+		final EditText keyword_editT = (EditText) findViewById(R.id.keyword_editText);
+		final EditText midiator = (EditText) findViewById(R.id.midiator_editText);
+		
+		final Button btnFieldNext = (Button) findViewById(R.id.btn_nextId);
 		
 		c_list_one = new ArrayList<String>();
 		c_list_one.add("US - First Name");
@@ -58,7 +53,7 @@ public class SelectFormat extends Activity{
 		c_list_two.add("US - First Name");
 		c_list_two.add("US - Last Name");
 		c_list_two.add("Philippines - First Name");
-		c_list_two.add("philippines - Last Name");
+		c_list_two.add("Philippines - Last Name");
 		c_list_two.add("UK - First Name");
 		c_list_two.add("UK - Last Name");
 		c_list_two.add("India - First Name");
@@ -87,13 +82,26 @@ public class SelectFormat extends Activity{
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), SelectDomainName.class);
                 
-                if(select_keyword_editT.equals("") && (select_firstfField.equals("Keyword") || select_secondField.equals("Keyword"))){
-                	alert.showAlertDialog(SelectFormat.this, "Login failed..", "Udfsdffsername/Password is incorrect", false);
-                }else{
+                if(select_firstfField.equals("Keyword") || select_secondField.equals("Keyword")){
+                	if(select_keyword_editT.equals("")){
+                    	alert.showAlertDialog(SelectFormat.this, "Error", "fill keyword field", false);
+                    }else{
+                    	if(select_firstfField.equals("Keyword")){
+                    		nextScreen.putExtra("firstField", select_keyword_editT);
+                            nextScreen.putExtra("secondField", getValueFromHashMap(select_secondField));
+                    	}else{
+                            nextScreen.putExtra("firstField", getValueFromHashMap(select_firstfField));
+                    		nextScreen.putExtra("secondField", select_keyword_editT);
+                    	}
+                    	
+                    	nextScreen.putExtra("midiator", select_midiator);
+                    	startActivity(nextScreen);
+                    }
+                	
+                } else{
                 	//Sending data to another Activity
                     nextScreen.putExtra("firstField", getValueFromHashMap(select_firstfField));
                     nextScreen.putExtra("secondField", getValueFromHashMap(select_secondField));
-                    nextScreen.putExtra("keyword_editT", select_keyword_editT);
                     nextScreen.putExtra("midiator", select_midiator);
                     
                     startActivity(nextScreen);
@@ -102,46 +110,43 @@ public class SelectFormat extends Activity{
             }
         });
 		
-		firstfField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-			public void onItemSelected(AdapterView<?> arg0, View v, int position, long id) {
-				if(arg0.getItemAtPosition(position).toString().equals("Keyword")){
-					c_list_two.remove("Keyword");
-				}else{
-					if(!c_list_two.contains("Keyword")){
-						c_list_two.add("Keyword");	
-					}
-				}
-	        }
-
-	        public void onNothingSelected(AdapterView<?> arg0) {
-	        }
-	    });
-		
-		secondField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> arg0, View v, int position, long id) {
-				if(arg0.getItemAtPosition(position).toString().equals("Keyword")){
-					c_list_one.remove("Keyword");
-				}else{
-					if(!c_list_one.contains("Keyword")){
-						c_list_one.add("Keyword");
-					}
-				}
-	        }
-
-	        public void onNothingSelected(AdapterView<?> arg0) {
-	        }
-	    });
-		
-		
+		configField(firstfField, c_list_two);
+		configField(secondField, c_list_one);
 	}
 	
+	/**
+	 * Two parameters are required on this method, first is the field name(first or second) and content list.
+	 * Two fields are available. (first field and second field)
+	 * A method that remove or add keyword name on the list if any in the field selected the keyword option 
+	 * Method that update the content list real time
+	 * **/
+	public void configField(Spinner field, final List<String> list_names){
+		
+		field.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> arg0, View v, int position, long id) {
+				if(arg0.getItemAtPosition(position).toString().equals("Keyword")){
+					list_names.remove("Keyword");
+				}else{
+					if(!list_names.contains("Keyword")){
+						list_names.add("Keyword");
+					}
+				}
+	        }
+	        public void onNothingSelected(AdapterView<?> arg0) {
+	        }
+	    });
+	}
+	
+	
+	/**
+	 * Method that Maps the return value of the fields. 
+	 * **/
 	public String getValueFromHashMap(String value){
 				String textFileValue = null;
 		
 				//Using Hashmap
 				HashMap<String, String> hm = new HashMap<String, String>();
-				hm.put("Keyword", "null");
+				hm.put("Keyword", "keyword");
 				hm.put("US - First Name", "fname-us.txt");
 				hm.put("US - First Name", "fname-us.txt");
 				hm.put("US - Last Name", "lname-us.txt");

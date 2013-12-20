@@ -10,6 +10,11 @@ import android.widget.EditText;
 
 public class SelectKeyWord extends Activity{
 	
+	String firstField;
+	String secondField;
+	String midiator;
+	String domainName;
+	
 	String frontKwrd;
 	String backKwrd;
 	
@@ -33,12 +38,12 @@ public class SelectKeyWord extends Activity{
 				
 				Bundle extras = getIntent().getExtras();
 				
-				String firstField = extras.getString("firstField");
-				String secondField = extras.getString("secondField");
-				String midiator = extras.getString("midiator");
-				String domainName = extras.getString("domainName");
+				firstField = extras.getString("firstField");
+				secondField = extras.getString("secondField");
+				midiator = extras.getString("midiator");
+				domainName = extras.getString("domainName");
 				
-				Log.i("info", firstField+midiator+secondField+domainName);
+				Log.i("info", "Set Keyword: "+frontKwrd+" "+backKwrd);
 				Intent nextScreen = new Intent(getApplicationContext(), GenerateEmail.class);
 				
 				nextScreen.putExtra("firstField",firstField);

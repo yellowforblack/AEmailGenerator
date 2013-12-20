@@ -5,6 +5,7 @@ import com.gp.aegen.model.DomainFormat;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +52,9 @@ public class SelectDomainName extends Activity {
 					}else if(!checkDomain.validate(domainName)){
 						alert.showAlertDialog(SelectDomainName.this, "Entry Failed...", "Invalid domain", false);
 					}else{
+						
+						Log.i("info:","Format set domain name: "+firstField+""+midiator+""+secondField+""+domainName);
+						
 						nextScreen.putExtra("firstField", firstField);
 	                    nextScreen.putExtra("secondField", secondField);
 	                    nextScreen.putExtra("midiator", midiator);

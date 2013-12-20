@@ -5,13 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import com.gp.aegen.impl.FileContent;
-
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
-public class ReadTextFile implements FileContent{
+public class ReadTextFile {
 	private Context myContext;
 	private String fileName;
 	
@@ -39,13 +37,13 @@ public class ReadTextFile implements FileContent{
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-			Log.i("Info[Error]:", "Cannot read the file.");
+			Log.e("Error:", fileName+": Cannot read the file.");
 		} finally{
 			try {
 				if (br != null)br.close();
 			} catch (IOException ex) {
 				ex.printStackTrace();
-				Log.i("Info[Error]:", "Cannot close the file.");
+				Log.e("Error:", "Cannot close the file.");
 			}
 		}
 		
@@ -53,21 +51,5 @@ public class ReadTextFile implements FileContent{
 	}
 
 
-	@Override
-	public void appContext() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void fileName() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void display() {
-		// TODO Auto-generated method stub
-		
-	}
 }

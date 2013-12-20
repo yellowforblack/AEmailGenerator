@@ -9,6 +9,7 @@ import com.gp.aegen.model.AlertDialogManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -99,6 +100,9 @@ public class SelectFormat extends Activity{
                     }
                 	
                 } else{
+                	
+                	Log.i("info:","Format: "+getValueFromHashMap(select_firstfField)+" "+select_midiator+" "+getValueFromHashMap(select_secondField));
+                	
                 	//Sending data to another Activity
                     nextScreen.putExtra("firstField", getValueFromHashMap(select_firstfField));
                     nextScreen.putExtra("secondField", getValueFromHashMap(select_secondField));

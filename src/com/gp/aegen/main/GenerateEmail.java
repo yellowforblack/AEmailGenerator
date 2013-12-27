@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.gp.aegen.model.ReadTextFile;
+import com.gp.aegen.model.WriteFileToStorageDevice;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -24,6 +25,9 @@ public class GenerateEmail extends Activity {
 	
 	ReadTextFile firstFile;
 	ReadTextFile secondFile;
+	
+	private final String DIRNAME = "AEGen";
+	private final String FILENAME = "fileSample.txt";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,10 @@ public class GenerateEmail extends Activity {
 			@Override
 			public void onClick(View v) {
 				
+				WriteFileToStorageDevice write = new WriteFileToStorageDevice();
+				write.setDirName(DIRNAME);
+				write.setFileName(FILENAME);
+				
 				Bundle extras = getIntent().getExtras();
 				firstField = extras.getString("firstField");
 				secondField = extras.getString("secondField");
@@ -50,17 +58,8 @@ public class GenerateEmail extends Activity {
 				firstFile = new ReadTextFile(getApplicationContext(),firstField);
 				secondFile = new ReadTextFile(getApplicationContext(),secondField);
 				
-			
-				if(!dir.exists()){
-					Log.i("info:", dir+" is created.");
-					dir.mkdir();
-				}else{
-
-					Log.i("info:", dir+" is exist.");
-				}
-				
 				for(int i=0; i<getFiles(firstFile, secondFile).size(); i++){
-				getFiles(firstFile, secondFile);
+					write.writeToAFile(getFiles(firstFile, secondFile).get(i));
 				}
 				
 

@@ -11,7 +11,7 @@
         android:text="Keyword Front(optional):" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/frontkwrd_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -27,16 +27,16 @@
         android:text="Keyword Back(optional):" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/backkwrd_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" 
         android:text="username[keyword]@domain.com"/>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/next_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Generate Emails" />
+        android:text="Next" />
 
 </LinearLayout>
